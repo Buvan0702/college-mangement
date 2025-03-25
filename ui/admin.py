@@ -1,43 +1,49 @@
-import tkinter as tk
-from tkinter import Frame, Label, Button
+import customtkinter as ctk
+
+# Initialize CustomTkinter
+ctk.set_appearance_mode("dark")  # Change to "light" for light mode
+ctk.set_default_color_theme("blue")
 
 # Initialize main window
-root = tk.Tk()
+root = ctk.CTk()
 root.title("Reports & Analytics Dashboard")
 root.geometry("1500x700")
-root.configure(bg="#0F111A")  # Dark background
 
 # ---------------- Left Sidebar ---------------- #
-sidebar = Frame(root, bg="#4A5FC1", width=250, height=600)
+sidebar = ctk.CTkFrame(root, width=250, height=700, fg_color="#4A5FC1")
 sidebar.place(x=0, y=0)
 
-Label(sidebar, text="Reports & Analytics", font=("Arial", 14, "bold"), fg="white", bg="#4A5FC1").place(x=20, y=20)
+ctk.CTkLabel(sidebar, text="📊 Reports & Analytics", font=("Arial", 16, "bold"), text_color="white").place(x=20, y=20)
 
 # Sidebar Options
 menu_options = ["Student Reports", "Attendance Analytics", "Financial Reports", "Performance Tracking"]
 y_position = 60
 
 for option in menu_options:
-    Label(sidebar, text=option, font=("Arial", 12), fg="#C0C0C0", bg="#4A5FC1").place(x=20, y=y_position)
-    y_position += 30
+    ctk.CTkButton(sidebar, text=option, font=("Arial", 13), fg_color="transparent", text_color="white",
+                  width=220, height=35, corner_radius=5, hover_color="#3747A5").place(x=10, y=y_position)
+    y_position += 50
 
 # ---------------- Top Menu ---------------- #
-Label(root, text="Export Report", font=("Arial", 12), fg="white", bg="#0F111A").place(x=300, y=20)
-Label(root, text="Print Report", font=("Arial", 12), fg="white", bg="#0F111A").place(x=450, y=20)
+ctk.CTkButton(root, text="📤 Export Report", font=("Arial", 12), fg_color="#1F2336", text_color="white",
+              width=150, height=35, corner_radius=5, hover_color="#3B82F6").place(x=300, y=20)
+
+ctk.CTkButton(root, text="🖨 Print Report", font=("Arial", 12), fg_color="#1F2336", text_color="white",
+              width=150, height=35, corner_radius=5, hover_color="#3B82F6").place(x=470, y=20)
 
 # ---------------- Report Cards ---------------- #
 card_bg = "#1A1D2A"
 card_width = 300
-card_height = 200
+card_height = 180
 x_positions = [270, 600, 930]
-titles = ["Semester-wise Student Report", "Attendance Trends", "Fee Collection Statistics"]
+titles = ["📑 Semester-wise Student Report", "📈 Attendance Trends", "💰 Fee Collection Statistics"]
 
 for i in range(3):
-    card = Frame(root, bg=card_bg, width=card_width, height=card_height)
+    card = ctk.CTkFrame(root, fg_color=card_bg, width=card_width, height=card_height, corner_radius=10)
     card.place(x=x_positions[i], y=80)
 
-    Label(card, text=titles[i], font=("Arial", 12, "bold"), fg="white", bg=card_bg).place(x=10, y=10)
-    Label(card, text="(Report Data Placeholder)", font=("Arial", 10), fg="grey", bg=card_bg).place(x=60, y=90)
+    ctk.CTkLabel(card, text=titles[i], font=("Arial", 13, "bold"), text_color="white").place(x=20, y=20)
+    ctk.CTkLabel(card, text="(Report Data Placeholder)", font=("Arial", 10), text_color="grey").place(x=80, y=80)
 
-# Run the Tkinter main loop
+# Run the CustomTkinter main loop
 root.mainloop()

@@ -1,17 +1,20 @@
-import tkinter as tk
+import customtkinter as ctk
 from tkinter import ttk
 
+# Initialize CustomTkinter
+ctk.set_appearance_mode("light")  # Change to "dark" for dark mode
+ctk.set_default_color_theme("blue")
+
 # Initialize main window
-root = tk.Tk()
+root = ctk.CTk()
 root.title("Student Attendance Tracking")
 root.geometry("1500x550")
-root.configure(bg="#F5F5F5")  # Light Gray Background
 
 # ---------------- Left Sidebar ---------------- #
-sidebar = tk.Frame(root, bg="#5A67D8", width=250, height=550)
+sidebar = ctk.CTkFrame(root, width=250, height=550, fg_color="#5A67D8")
 sidebar.place(x=0, y=0)
 
-tk.Label(sidebar, text="👤 Student", font=("Arial", 16, "bold"), fg="white", bg="#5A67D8").place(x=20, y=20)
+ctk.CTkLabel(sidebar, text="👤 Student", font=("Arial", 18, "bold"), text_color="white").place(x=20, y=20)
 
 # Sidebar Options
 menu_options = ["Course Registration", "Course Management", "Attendance Tracking", "My Attendance", 
@@ -19,31 +22,34 @@ menu_options = ["Course Registration", "Course Management", "Attendance Tracking
 
 y_position = 60
 for option in menu_options:
-    btn_bg = "#D9DBFF" if option == "Attendance Tracking" else "#5A67D8"
-    btn_fg = "black" if option == "Attendance Tracking" else "white"
-    tk.Button(sidebar, text=option, font=("Arial", 11), fg=btn_fg, bg=btn_bg, bd=0, anchor="w", width=28, 
-              relief="flat").place(x=10, y=y_position)
-    y_position += 35
+    btn_color = "#D9DBFF" if option == "Attendance Tracking" else "#5A67D8"
+    btn_text_color = "black" if option == "Attendance Tracking" else "white"
+    ctk.CTkButton(sidebar, text=option, font=("Arial", 12), fg_color=btn_color, text_color=btn_text_color,
+                  width=220, height=30, corner_radius=5, hover_color="#4251CC").place(x=10, y=y_position)
+    y_position += 40
 
 # ---------------- Dropdown for Sorting ---------------- #
-sort_var = tk.StringVar()
-sort_options = ["Sort by Attendance", "Sort by Name", "Sort by Date"]
-sort_dropdown = ttk.Combobox(root, textvariable=sort_var, values=sort_options, state="readonly", width=20)
+sort_var = ctk.StringVar(value="Sort by Attendance")
+sort_dropdown = ctk.CTkComboBox(root, variable=sort_var, values=["Sort by Attendance", "Sort by Name", "Sort by Date"],
+                                width=180, height=35, fg_color="white", text_color="black", dropdown_hover_color="#3B82F6")
 sort_dropdown.place(x=280, y=20)
-sort_dropdown.set("Sort by Attendance")  # Default selection
 
 # ---------------- Attendance Table ---------------- #
 columns = ("Course Name", "Attendance Percentage", "Last Attended Date", "Attendance Status")
 
-tree = ttk.Treeview(root, columns=columns, show="headings", height=6)
-tree.place(x=280, y=80)
+# Create a Treeview inside a CTkFrame
+table_frame = ctk.CTkFrame(root, width=1200, height=300, fg_color="white")
+table_frame.place(x=280, y=80)
+
+tree = ttk.Treeview(table_frame, columns=columns, show="headings", height=8)
+tree.pack(expand=True, fill="both", padx=10, pady=10)
 
 # Define column headings
 for col in columns:
     tree.heading(col, text=col)
-    tree.column(col, width=200)
+    tree.column(col, width=250)
 
-# Sample data (with colors for different attendance status)
+# Sample attendance data
 attendance_data = [
     ("Introduction to Computer Science", "92%", "2023-10-10", "Present"),
     ("Calculus II", "85%", "2023-10-09", "Late"),
@@ -52,7 +58,7 @@ attendance_data = [
     ("General Chemistry", "88%", "2023-10-06", "Present"),
 ]
 
-# Insert data into the table
+# Insert data into the table with color-coded status
 for item in attendance_data:
     tag = "green" if item[3] == "Present" else "orange" if item[3] == "Late" else "red"
     tree.insert("", "end", values=item, tags=(tag,))
@@ -62,5 +68,5 @@ tree.tag_configure("green", foreground="green")
 tree.tag_configure("orange", foreground="orange")
 tree.tag_configure("red", foreground="red")
 
-# Run the Tkinter main loop
+# Run the CustomTkinter main loop
 root.mainloop()
